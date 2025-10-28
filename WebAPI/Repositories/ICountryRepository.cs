@@ -9,5 +9,6 @@ namespace WebAPI.Repositories
         public ICollection<Country> GetAllCountriesRecord();
         public Country? GetCountryRecord(string countryName);
         public bool DeleteCountryRecord(Country country);
+        (int TotalCount, List<(string Name, double EstimatedGdp)>, DateTime LastRefreshedAt) GetSummaryData();
     }
 }

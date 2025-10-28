@@ -2,24 +2,21 @@
 using Newtonsoft.Json;
 using WebAPI.Models;
 using WebAPI.Repositories;
+using WebAPI.Utils;
 
 namespace WebAPI.Services
 {
     public class CountryService
     {
-        private readonly HttpClientService _httpClientService;
+        
         private readonly ICountryRepository repository;
-        public CountryService(HttpClientService httpClientService, ICountryRepository countryRepository)
+        public CountryService(ICountryRepository countryRepository)
         {
-            _httpClientService = httpClientService;
             repository = countryRepository;
         }
 
-        public async Task AddCountryRecordToDB()
+        public async Task AddCountryRecordToDB(ICollection<CountryInfoDto> countryDetails, ExchangeDto exchangeRateDetails)
         {
-            var countryDetailsResponse = await _httpClientService.GetCountryAsync();
-            var countryDetails = JsonConvert.DeserializeObject<ICollection<CountryInfoDto>>(countryDetailsResponse);
-
 
             foreach (var country in countryDetails)
             {                
@@ -32,14 +29,12 @@ namespace WebAPI.Services
                 if (currencyCodeValue != null)
                 {
                     currencyCode = currencyCodeValue.Code;
-                    var exchangeRateResponse = await _httpClientService.GetExchangeRatesAsync();
-                    var exchangeRateDetails = JsonConvert.DeserializeObject<ExchangeDto>(exchangeRateResponse);
-
                     if (exchangeRateDetails.Rates != null && exchangeRateDetails.Rates.ContainsKey(currencyCode))
                     {
-                        exchangeRate = exchangeRateDetails.Rates[currencyCode];
+                        exchangeRate = Math.Round(exchangeRateDetails.Rates[currencyCode], 2);
                         Random random = new Random();
-                        estimatedGDP = (double)random.Next(1000, 2001) / (double)exchangeRate;
+                        double randNum = Math.Round((double) random.Next(1000, 2001), 2);
+                        estimatedGDP = Math.Round(population * (randNum / (double)exchangeRate), 1);
                     }
                     else
                     {
@@ -69,7 +64,10 @@ namespace WebAPI.Services
                 else
                 {
                     repository.UpdateCountryRecord(existingCountry, newCountryRecord);
-                }                
+                }
+
+                var (totalCount, top5Data, lastUpdated) = repository.GetSummaryData();
+                await SummaryGenerator.GenerateAndSaveImageAsync(totalCount, top5Data, lastUpdated);
             }
         }
 
@@ -109,6 +107,23 @@ namespace WebAPI.Services
                 return false;
             }
         }
+
+        //public Country? DBRecordSummary()
+        //{
+        //    try
+        //    {
+        //        var countries = repository.GetAllCountriesRecord();
+        //        int totalCountries = countries.Count;
+        //        if (totalCountries > 0)
+        //        {
+        //            countries = countries.OrderBy(c => c.EstimatedGDP).ToList();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return null;
+        //    }
+        //}
 
         public CRStatus? GetCRStatus()
         {

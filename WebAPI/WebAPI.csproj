@@ -18,11 +18,15 @@
     <PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+    <PackageReference Include="SixLabors.Fonts" Version="2.1.3" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Utils\" />
+    <Folder Include="Fonts\" />
   </ItemGroup>
 
 </Project>

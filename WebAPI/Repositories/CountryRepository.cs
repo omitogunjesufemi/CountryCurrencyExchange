@@ -73,5 +73,30 @@ namespace WebAPI.Repositories
             Country? retrivedCountry = _dbContext.Countries.FirstOrDefault(c => c.Name.ToLower() == countryName.ToLower().Trim());
             return retrivedCountry;
         }
+
+        public (int TotalCount, List<(string Name, double EstimatedGdp)>, DateTime LastRefreshedAt) GetSummaryData()
+        {
+            int totalCount = _dbContext.Countries.Count();
+
+            var summaryData = new List<(string Name, double EstimateGDP)>();
+            DateTime lastUpdated = DateTime.Now;
+
+            if (totalCount > 0)
+            {
+                lastUpdated = _dbContext.Countries.Max(c => c.UpdatedAt);
+
+                summaryData = _dbContext.Countries
+                    .Where(c => c.EstimatedGDP.HasValue)
+                    .OrderByDescending(c => c.EstimatedGDP)
+                    .Take(5)
+                    .Select(c => new {
+                    c.Name, 
+                    EstimatedGdp = c.EstimatedGDP.Value})
+                    .AsEnumerable()
+                    .Select(c => (c.Name, c.EstimatedGdp))
+                    .ToList();
+            }
+            return (totalCount, summaryData, lastUpdated);
+        }
     }
 }
