@@ -19,7 +19,7 @@ namespace WebAPI.Controllers
             _httpClientService = httpClientService;
         }
 
-        [Route("/refresh")]
+        [Route("refresh")]
         [HttpPost]
         // POST /countries/refresh
         public async Task<IActionResult> AddCountryCurrencyExchangeToDB()
