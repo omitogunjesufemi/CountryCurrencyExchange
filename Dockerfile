@@ -26,6 +26,7 @@ RUN dotnet publish "./WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
-COPY WebAPI/Utils/Fonts/ ./Utils/Fonts/
+COPY WebAPI/Fonts/ ./Fonts/
+COPY WebAPI/cache/ ./cache/
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "WebAPI.dll"]
