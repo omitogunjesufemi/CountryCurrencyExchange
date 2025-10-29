@@ -50,6 +50,24 @@ namespace WebAPI
                 app.UseSwaggerUI();
             }
 
+            if (app.Environment.IsProduction())
+            {
+                try
+                {
+                    using (var scope = app.Services.CreateScope())
+                    {
+                        var dbContext = scope.ServiceProvider.GetRequiredService<CountryDBContext>();
+                        dbContext.Database.Migrate();
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred while migrating the database.");
+                }
+            }
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
