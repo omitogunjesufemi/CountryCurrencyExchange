@@ -98,7 +98,7 @@ namespace WebAPI.Controllers
 
             if (!string.IsNullOrEmpty(currency))
             {
-                filteredCountries = filteredCountries.Where(c => c.CurrencyCode.ToLower().Trim() == currency.ToLower().Trim());
+                filteredCountries = filteredCountries.Where(c => c.CurrencyCode == currency.ToUpper().Trim());
             }
 
             if (!string.IsNullOrEmpty(sort))
