@@ -55,5 +55,3 @@ packages/
 # Temporary files
 temp/
 tmp/
-
-Migrations/
