@@ -57,8 +57,8 @@ dotnet run
 
 The API will typically run at:
 
-* `http://localhost:5000`
-* `https://localhost:5001`
+* `http://localhost:<port>`
+* `https://localhost:<port>`
 
 ---
 
@@ -87,7 +87,7 @@ All routes are prefixed with `/countries`.
 | Query                                     | Result                                                 |
 | ----------------------------------------- | ------------------------------------------------------ |
 | `GET /countries?region=Asia&currency=USD` | Lists Asian countries using USD                        |
-| `GET /countries?sort=EstimatedGDP_desc`   | Lists all countries sorted by Estimated GDP descending |
+| `GET /countries?sort=gdp_desc`   | Lists all countries sorted by Estimated GDP descending |
 | `GET /countries/japan`                    | Detailed JSON record for Japan                         |
 
 ---
