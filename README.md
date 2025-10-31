@@ -21,7 +21,7 @@ An **ASP.NET Core Web API** designed to aggregate country data, currency exchang
 ## 🛠️ Prerequisites
 
 * **.NET 8.0 SDK** (or a compatible version)
-* **Database**: SQLite by default (configurable in `CountryDBContext`)
+* **Database**: MySQL (configurable in `CountryDBContext`)
 * **External APIs**: Two services consumed via `HttpClientService`, configured in settings or environment
 * **Font resource**:
 
